@@ -1,11 +1,15 @@
 % vim: syntax=tex
 \documentclass{article}
-
-\newcommand{\menuitem}[3]{#1\hfill#2\par}
+\usepackage{fontspec}
+\setmainfont[Mapping=tex-text]{IBM Plex Sans}
+\usepackage[margin=2cm]{geometry}
+\setlength\parindent{0pt}
+\setlength\parskip{9pt}
 
 \begin{document}
 {{#each items}}
-{{trim name}} {{ #if price }}\hfill {{price}}{{ /if }} \\
+{\bfseries {{trim name_pl}}{{#if name_en}} $\cdot$ {{ name_en }}{{ /if }} }{{ #if price }} \hfill {{format_price price}}{{ /if }} \\
+{{ #if description_pl }}{{ description_pl }}\\{{ /if }}
 
 {{/each}}
 \end{document}
