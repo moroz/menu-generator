@@ -20,7 +20,7 @@ struct MenuItem {
 #[derive(Debug, Serialize)]
 struct MenuCategory {
     name: String,
-    items: Vec<MenuItem>,
+    items: Vec<Box<MenuItem>>,
 }
 
 fn build_reader(filename: String) -> BufReader<File> {
@@ -55,20 +55,23 @@ fn build_template_registry<'a>() -> handlebars::Handlebars<'a> {
     reg
 }
 
-fn group_dishes(dishes: Vec<MenuItem>) -> HashMap<String, Vec<MenuItem>> {
+fn group_dishes(dishes: Vec<MenuItem>) -> HashMap<String, Vec<Box<MenuItem>>> {
     let mut result = HashMap::new();
     for item in dishes {
         let key = item.category.clone();
         let vector = result.entry(key).or_insert(vec![]);
-        vector.push(item)
+        vector.push(Box::new(item))
     }
     result
 }
 
-fn grouped_to_categories(map: HashMap<String, Vec<MenuItem>>) -> Vec<MenuCategory> {
-    map.into_iter()
-        .map(move |(key, items)| MenuCategory { name: key, items })
-        .collect()
+fn grouped_to_categories(map: HashMap<String, Vec<Box<MenuItem>>>) -> Vec<MenuCategory> {
+    let mut items: Vec<_> = map
+        .into_iter()
+        .map(|(key, items)| MenuCategory { name: key, items })
+        .collect();
+    items.sort_by_key(|item| item.name.clone());
+    items
 }
 
 fn main() -> io::Result<()> {
