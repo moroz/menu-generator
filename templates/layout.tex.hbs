@@ -7,9 +7,14 @@
 \setlength\parskip{9pt}
 
 \begin{document}
+{{#each groups}}
+\section*{ {{~name~}} }
+
 {{#each items}}
 {\bfseries {{trim name_pl}}{{#if name_en}} $\cdot$ {{ name_en }}{{ /if }} }{{ #if price }} \hfill {{format_price price}}{{ /if }} \\
 {{ #if description_pl }}{{ description_pl }}\\{{ /if }}
+
+{{/each}}
 
 {{/each}}
 \end{document}

@@ -1,7 +1,7 @@
-use std::env;
 use std::fs::File;
 use std::io;
 use std::io::BufReader;
+use std::{collections::HashMap, env};
 
 use handlebars::{handlebars_helper, to_json};
 use serde::{Deserialize, Serialize};
@@ -15,6 +15,12 @@ struct MenuItem {
     description_en: Option<String>,
     category: String,
     price: Option<f64>,
+}
+
+#[derive(Debug, Serialize)]
+struct MenuCategory {
+    name: String,
+    items: Vec<MenuItem>,
 }
 
 fn build_reader(filename: String) -> BufReader<File> {
@@ -49,6 +55,22 @@ fn build_template_registry<'a>() -> handlebars::Handlebars<'a> {
     reg
 }
 
+fn group_dishes(dishes: Vec<MenuItem>) -> HashMap<String, Vec<MenuItem>> {
+    let mut result = HashMap::new();
+    for item in dishes {
+        let key = item.category.clone();
+        let vector = result.entry(key).or_insert(vec![]);
+        vector.push(item)
+    }
+    result
+}
+
+fn grouped_to_categories(map: HashMap<String, Vec<MenuItem>>) -> Vec<MenuCategory> {
+    map.into_iter()
+        .map(move |(key, items)| MenuCategory { name: key, items })
+        .collect()
+}
+
 fn main() -> io::Result<()> {
     let filename = env::args().nth(1).unwrap();
     let reader = build_reader(filename);
@@ -57,8 +79,10 @@ fn main() -> io::Result<()> {
 
     let items: Vec<MenuItem> = csv.deserialize().filter_map(|r| r.ok()).collect();
 
+    let grouped = grouped_to_categories(group_dishes(items));
+
     let mut assigns = Map::new();
-    assigns.insert("items".to_string(), to_json(&items));
+    assigns.insert("groups".to_string(), to_json(&grouped));
 
     let result = reg.render("layout", &assigns).unwrap();
     println!("{result}");
