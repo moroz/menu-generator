@@ -1,7 +1,8 @@
+use indexmap::IndexMap;
+use std::env;
 use std::fs::File;
 use std::io;
 use std::io::BufReader;
-use std::{collections::HashMap, env};
 
 use handlebars::{handlebars_helper, to_json};
 use serde::{Deserialize, Serialize};
@@ -55,8 +56,8 @@ fn build_template_registry<'a>() -> handlebars::Handlebars<'a> {
     reg
 }
 
-fn group_dishes(dishes: Vec<MenuItem>) -> HashMap<String, Vec<Box<MenuItem>>> {
-    let mut result = HashMap::new();
+fn group_dishes(dishes: Vec<MenuItem>) -> IndexMap<String, Vec<Box<MenuItem>>> {
+    let mut result = IndexMap::new();
     for item in dishes {
         let key = item.category.clone();
         let vector = result.entry(key).or_insert(vec![]);
@@ -65,13 +66,10 @@ fn group_dishes(dishes: Vec<MenuItem>) -> HashMap<String, Vec<Box<MenuItem>>> {
     result
 }
 
-fn grouped_to_categories(map: HashMap<String, Vec<Box<MenuItem>>>) -> Vec<MenuCategory> {
-    let mut items: Vec<_> = map
-        .into_iter()
+fn grouped_to_categories(map: IndexMap<String, Vec<Box<MenuItem>>>) -> Vec<MenuCategory> {
+    map.into_iter()
         .map(|(key, items)| MenuCategory { name: key, items })
-        .collect();
-    items.sort_by_key(|item| item.name.clone());
-    items
+        .collect()
 }
 
 fn main() -> io::Result<()> {

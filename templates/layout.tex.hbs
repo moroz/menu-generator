@@ -1,20 +1,32 @@
 % vim: syntax=tex
 \documentclass{article}
-\usepackage{fontspec}
+\usepackage{fontspec,graphicx,tikz}
 \setmainfont[Mapping=tex-text]{IBM Plex Sans}
-\usepackage[margin=2cm]{geometry}
+\usepackage[left=2.5cm,right=2.5cm,top=3cm]{geometry}
+\usepackage{nowidow}
 \setlength\parindent{0pt}
 \setlength\parskip{9pt}
+\usepackage{everypage}
 
-\begin{document}
+\AddEverypageHook{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north,yshift=.4cm] at (current page.north)
+    {\includegraphics[width=5cm]{/Users/karol/working/menu/artesano_logo.pdf}};
+  \end{tikzpicture}}
+
+  \begin{document}
 {{#each groups}}
+\begin{minipage}{\textwidth}
 \section*{ {{~name~}} }
 
 {{#each items}}
 {\bfseries {{trim name_pl}}{{#if name_en}} $\cdot$ {{ name_en }}{{ /if }} }{{ #if price }} \hfill {{format_price price}}{{ /if }} \\
-{{ #if description_pl }}{{ description_pl }}\\{{ /if }}
+{{ #if description_pl }}{{ description_pl }}\\ {{ /if }}
+{{ #if description_en }}{{ description_en }}\\ {{ /if }}
 
 {{/each}}
+\end{minipage}
+\vfill
 
 {{/each}}
 \end{document}
