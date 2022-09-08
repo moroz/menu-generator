@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io;
 use std::io::BufReader;
 
-use handlebars::to_json;
+use handlebars::{handlebars_helper, to_json};
 use serde::{Deserialize, Serialize};
 use serde_json::value::{Map, Value as Json};
 
@@ -23,9 +23,15 @@ fn build_reader(filename: String) -> BufReader<File> {
 }
 
 fn build_template_registry<'a>() -> handlebars::Handlebars<'a> {
+    handlebars_helper!(trim: |data: String| data.trim().replace("&amp;", "\\&"));
+    handlebars_helper!(escape: |data: String| data.replace("&", "\\&"));
+
     let mut reg = handlebars::Handlebars::new();
     reg.register_template_file("layout", "./templates/layout.tex.hbs")
         .unwrap();
+
+    reg.register_helper("trim", Box::new(trim));
+    reg.register_escape_fn(|data: &str| data.replace("&", "\\&").to_string());
     reg
 }
 
