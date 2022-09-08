@@ -5,7 +5,7 @@ use std::io::BufReader;
 
 use handlebars::{handlebars_helper, to_json};
 use serde::{Deserialize, Serialize};
-use serde_json::value::{Map, Value as Json};
+use serde_json::value::Map;
 
 #[derive(Debug, Deserialize, Serialize)]
 struct MenuItem {

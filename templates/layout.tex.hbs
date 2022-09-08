@@ -1,8 +1,11 @@
-% vim: syntax=latex
+% vim: syntax=tex
 \documentclass{article}
+
+\newcommand{\menuitem}[3]{#1\hfill#2\par}
 
 \begin{document}
 {{#each items}}
-\menuitem{ {{~ trim name~}} }{ {{~price~}} }
+{{trim name}} {{ #if price }}\hfill {{price}}{{ /if }} \\
+
 {{/each}}
 \end{document}
