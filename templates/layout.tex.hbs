@@ -10,8 +10,8 @@
 
 \AddEverypageHook{%
   \begin{tikzpicture}[remember picture,overlay]
-    \node[anchor=north,yshift=.4cm] at (current page.north)
-    {\includegraphics[width=5cm]{/Users/karol/working/menu/artesano_logo.pdf}};
+    \node[anchor=north,yshift=.3cm] at (current page.north)
+    {\includegraphics[width=5cm]{./templates/logo.pdf}};
   \end{tikzpicture}}
 
   \begin{document}
@@ -20,7 +20,7 @@
 \section*{ {{~name~}} }
 
 {{#each items}}
-{\bfseries {{trim name_pl}}{{#if name_en}} $\cdot$ {{ name_en }}{{ /if }} }{{ #if price }} \hfill {{format_price price}}{{ /if }} \\
+{\bfseries {{trim name_pl}}{{#if name_en}} · {{ name_en }}{{ /if }} }{{ #if price }} \hfill {{format_price price}}{{ /if }} \\
 {{ #if description_pl }}{{ description_pl }}\\ {{ /if }}
 {{ #if description_en }}{{ description_en }}\\ {{ /if }}
 
