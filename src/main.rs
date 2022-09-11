@@ -16,6 +16,7 @@ struct MenuItem {
     description_en: Option<String>,
     category: String,
     price: Option<f64>,
+    price_for_2: Option<f64>,
 }
 
 #[derive(Debug, Serialize)]

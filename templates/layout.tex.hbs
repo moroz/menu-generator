@@ -20,8 +20,8 @@
 \section*{ {{~name~}} }
 
 {{#each items}}
-{\bfseries {{trim name_pl}}{{#if name_en}} · {{ name_en }}{{ /if }} }{{ #if price }} \hfill {{format_price price}}{{ /if }} \\
-{{ #if description_pl }}{{ description_pl }}\\ {{ /if }}
+{\bfseries {{trim name_pl}}{{#if name_en}} · {{ name_en }}{{ /if }} }{{ #if price }} \hfill {{#if price_for_2}}1 os. {{/if}}{{format_price price}}{{#if price_for_2}}, 2 os. {{format_price price_for_2}}{{/if}}{{ /if }} \\
+{{ #if description_pl }}{{ description_pl }}{{ /if }}\\
 {{ #if description_en }}{{ description_en }}\\ {{ /if }}
 
 {{/each}}
