@@ -1,8 +1,8 @@
 % vim: syntax=tex
-\documentclass{article}
+\documentclass[a4paper]{article}
 \usepackage{fontspec,graphicx,tikz}
-\setmainfont[Mapping=tex-text]{IBM Plex Sans}
-\usepackage[left=2.5cm,right=2.5cm,top=3cm]{geometry}
+\setmainfont[Mapping=tex-text]{Lato}
+\usepackage[left=2.3cm,right=2.3cm,top=3cm]{geometry}
 \usepackage{nowidow}
 \setlength\parindent{0pt}
 \setlength\parskip{9pt}
@@ -14,17 +14,18 @@
     {\includegraphics[width=5cm]{./templates/logo.pdf}};
   \end{tikzpicture}}
 
-  \begin{document}
+\begin{document}
+\pagestyle{empty}
 {{#each groups}}
 \begin{minipage}{\textwidth}
 \section*{ {{~name~}} }
 
 {{#each items}}
 {\bfseries {{trim name_pl}}{{#if name_en}} · {{ name_en }}{{ /if }} }{{ #if price }} \hfill {{#if price_for_2}}1 os. {{/if}}{{format_price price}}{{#if price_for_2}}, 2 os. {{format_price price_for_2}}{{/if}}{{ /if }} \\
-{{ #if description_pl }}{{ description_pl }}{{ /if }}\\
-{{ #if description_en }}{{ description_en }}\\ {{ /if }}
+{{ #if description_pl }}{{ description_pl }}\\ {{ /if }}%
+{{ #if description_en }}{{ description_en }}\\ {{ /if }}%
 
-{{/each}}
+{{/each}}%
 \end{minipage}
 \vfill
 
