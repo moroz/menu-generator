@@ -1,3 +1,5 @@
 #!/bin/sh
 
-cargo run ../source.csv | xelatex --jobname=menu --output-directory=..
+SOURCE=${1:-../source.csv}
+
+cargo run $SOURCE | xelatex --jobname=menu --output-directory=..
